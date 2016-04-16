@@ -24,6 +24,6 @@ var staticPath = path.resolve(__dirname);
 app.use(express.static(staticPath));
 console.log(staticPath);
 
-app.listen(3000, function() {
+app.listen(80, function() {
   console.log('listening');
 });
