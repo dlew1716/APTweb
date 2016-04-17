@@ -1,7 +1,9 @@
-
+var datetime = new Date();
+console.log(datetime.toString());
 
 var net = require('net');
 var fs = require('fs');
+var crypto = require('crypto');
 
 var server = net.createServer();  
 server.on('connection', handleConnection);
@@ -12,8 +14,9 @@ server.listen(9999, function() {
 
 function handleConnection(conn) {  
   var remoteAddress = conn.remoteAddress + ':' + conn.remotePort;
+  var filename = datetime
   console.log('new client connection from %s', remoteAddress);
-  var wstream = fs.createWriteStream('myBinaryFile');
+  var wstream = fs.createWriteStream(__dirname + "/wavs/" + filename.toString());
 
   conn.on('data', onConnData);
   conn.once('close', onConnClose);
