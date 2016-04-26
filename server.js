@@ -19,6 +19,8 @@ files.forEach(function(value){
 
 fileDates.sort()
 
+console.log(fileDates)
+
 var template = handlebars.compile(source);
 var outputString = template(key);
 
