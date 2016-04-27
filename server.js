@@ -4,10 +4,9 @@ var handlebars = require('handlebars');
 var fs = require('fs');
 
 
-var key = {image1: "My New Post", image1bin: "This is my first post!"};
+var key = {'1': "My New Post", image1bin: "This is my first post!"};
 
 var source = fs.readFileSync('index.html').toString();
-
 
 
 var files = fs.readdirSync(__dirname + '/wavs')

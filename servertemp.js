@@ -3,7 +3,6 @@ console.log(datetime.toString());
 
 var net = require('net');
 var fs = require('fs');
-var crypto = require('crypto');
 
 var server = net.createServer();  
 server.on('connection', handleConnection);
