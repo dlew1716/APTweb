@@ -3,6 +3,7 @@ var express = require('express');
 var bodyParser = require('body-parser')
 var handlebars = require('handlebars')
 var fs = require('fs')
+var PythonShell = require('python-shell');
 
 var app = express();
 
@@ -19,25 +20,27 @@ var sortByKey = function( key ){
   } 
 }
 
+var buildTemplate = function(key,templatekey){
+
+  var i = 0;
+
+  key.forEach(function(value){
+    templatekey[ 'name'+i.toString() ] = value.time
+    templatekey[ 'image'+i.toString() ] = "wavs/"+value.name+".jpeg"
+    i = i+1;
+  });
+
+  return templatekey
+}
+
+
 var key = JSON.parse(fs.readFileSync('WavFiles.json'));
 
 key = key.sort( sortByKey('time') );
 
 templatekey = {};
-
-var i = 0;
-
-key.forEach(function(value){
-
-	templatekey[ 'name'+i.toString() ] = value.time
-	templatekey[ 'image'+i.toString() ] = value.name
-	i = i+1;
-
-});
-
-
+templatekey = buildTemplate(key,templatekey); 
 outputString = template(templatekey);
-
 
 
 app.use(bodyParser.json({limit: '100mb'}));
@@ -54,14 +57,34 @@ app.get('/', function(req, res) {
 
 });
 
+app.post('/new', function (req, res) {
+
+  res.send('POST request received');
+
+  var options = {
+    args: ['mono_best.wav', 'fake.png', 'value3']
+  };
+
+  PythonShell.run('MyDecoder.py',options, function (err, results) {
+    if (err) throw err;
+    // results is an array consisting of messages collected during execution 
+    console.log('results: %j', results);
+  });
+
+console.log('yes this is dog')
+
+
+});  
+
 app.post('/', function (req, res) {
 
 
   res.send('POST request received');
   //console.log(req.connection.remoteAddress);
 
-  var buf = new Buffer(req.body.wav, 'base64');
 
+
+  var buf = new Buffer(req.body.wav, 'base64');
   var wstream = fs.createWriteStream(__dirname + "/wavs/" +req.body.filename.toString()+".jpeg");
   wstream.write(buf);
   wstream.end();
@@ -69,21 +92,10 @@ app.post('/', function (req, res) {
   key.push({name:req.body.filename,time:req.body.time})
 
   key = key.sort( sortByKey('time') );
-  key.splice( 0, key.length - 6 )
+  key.splice( 0, key.length - 6 );
 
   templatekey = {};
-
-
-
-  var i = 0;
-
-  key.forEach(function(value){
-
-  	templatekey[ 'name'+i.toString() ] = value.time
-	templatekey[ 'image'+i.toString() ] = "wavs/"+value.name+".jpeg"
-	i = i+1;
-	});
-
+  templatekey = buildTemplate(key,templatekey); 
   outputString = template(templatekey);
 
   fs.writeFileSync('WavFiles.json', JSON.stringify(key));
