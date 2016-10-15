@@ -31,6 +31,7 @@ app.get('/', function(req, res) {
 
 app.post('/', function(req, res) {
   res.send("hello from post");
+  console.log("hello from post")
 });
 
 var staticPath = path.resolve(__dirname);
