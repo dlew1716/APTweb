@@ -29,6 +29,10 @@ app.get('/', function(req, res) {
   res.send(outputString);
 });
 
+app.post('/', function(req, res) {
+  res.send("hello from post");
+});
+
 var staticPath = path.resolve(__dirname);
 app.use(express.static(staticPath));
 console.log(staticPath);
