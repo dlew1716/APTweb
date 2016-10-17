@@ -47,33 +47,35 @@
 
       <div class="jumbotron">
         <h1>Latest Image</h1>
-        <p class="lead">Date</p>
-        <img src="testpy.png" class="img-responsive img-rounded" alt="Latest" >
+        <p class="lead">{{name0}}</p>
+        <a href="{{image0}}">
+        <img src="{{image0}}" class="img-responsive img-rounded" alt="Latest" >
+        </a>
         <br>
-        <p><a class="btn btn-lg btn-success" href="#" role="button">Upload Your Own</a></p>
+        <p><button id="uploadButton" class="btn btn-lg btn-success">Upload Your Own</button></p>
       </div>
 
       <div class="row marketing">
         <div class="col-lg-6">
-          <h4>{{name0}}</h4>
-          <p><img src="{{image0}}" class="img-responsive img-rounded" ></p>
-
           <h4>{{name1}}</h4>
-          <p><img src="{{image1}}" class="img-responsive img-rounded" ></p>
+          <p><a href="{{image1}}"><img src="{{image1}}" class="img-responsive img-rounded" ></a></p>
 
           <h4>{{name2}}</h4>
-          <p><img src="{{image2}}" class="img-responsive img-rounded" ></p>
+          <p><a href="{{image2}}"><img src="{{image2}}" class="img-responsive img-rounded" ></a></p>
+
+          <h4>{{name3}}</h4>
+          <p><a href="{{image3}}"><img src="{{image3}}" class="img-responsive img-rounded" ></a></p>
         </div>
 
         <div class="col-lg-6">
-          <h4>{{name3}}</h4>
-          <p><img src="{{image3}}" class="img-responsive img-rounded" ></p>
-
           <h4>{{name4}}</h4>
-          <p><img src="{{image4}}" class="img-responsive img-rounded" ></p>
+          <p><a href="{{image4}}"><img src="{{image4}}" class="img-responsive img-rounded" ></a></p>
 
           <h4>{{name5}}</h4>
-          <p><img src="{{image5}}" class="img-responsive img-rounded" ></p>
+          <p><a href="{{image5}}"><img src="{{image5}}" class="img-responsive img-rounded" ></a></p>
+
+          <h4>{{name6}}</h4>
+          <p><a href="{{image6}}"><img src="{{image6}}" class="img-responsive img-rounded" ></a></p>
         </div>
       </div>
 
@@ -86,6 +88,67 @@
 
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <script src="Narrow%20Jumbotron%20Template%20for%20Bootstrap_files/ie10-viewport-bug-workaround.js"></script>
-  
+    <script>
+      function uploadXHR( url, data, callback ){
+
+        var request = new XMLHttpRequest();
+        request.open( "POST", url );
+        request.setRequestHeader('Content-Type','application/json')
+
+        var cancel = function(){
+          request.removeEventListener( 'load', handleLoad );
+          request.removeEventListener( 'error', handleError );
+          request.abort();
+        };
+
+        var handleLoad = function ( event ) {
+          if ( request.status === 200 ) {
+            //var response = JSON.parse( event.target.response );
+            callback( null );
+          } else {
+            callback( "Could not perform upload" )
+          }
+        }
+
+        var handleError = function( event ){
+          cancel();
+          callback( 'No Internet connection' );
+        }
+
+        request.addEventListener( 'load', handleLoad );
+        request.addEventListener( 'error', handleError );
+
+        if( data.byteLength > 100000000 ) return callback( "File size too big" );
+
+        request.send( data );
+
+        return cancel;
+
+      };
+
+      var uploadButton = document.getElementById('uploadButton');
+      var fileInput = document.createElement('input');
+      fileInput.setAttribute('type', 'file');
+      fileInput.addEventListener( 'change', function(){
+        var file = fileInput.files[0];
+        var reader = new window.FileReader();
+        reader.readAsDataURL(file); 
+        reader.onloadend = function() {
+          base64data = reader.result;
+          var stripped = base64data.split(',')[1];       
+          var obj = {
+            wav: stripped,
+            date: new Date().toISOString().replace(/\..+/, '').replace(":", 'z').replace(":", 'z')
+          }         
+          uploadXHR('/', JSON.stringify(obj), function(err, response){
+            console.log(err, response);
+          });
+        }
+        // uploadXHR('/', )
+      });
+      uploadButton.addEventListener('click', function(){
+        fileInput.click();
+      })
+    </script>
 
 </body></html>
