@@ -77,7 +77,7 @@ app.get('/', function(req, res) {
 });
 
 app.post('/', function(req, res) {
-  
+  console.log("Post Request Received")
   var buf = new Buffer(req.body.wav, 'base64');
   var wstream = fs.createWriteStream(__dirname + "/wavs/" +req.body.date.toString()+".wav");
   wstream.write(buf);
@@ -103,6 +103,6 @@ var staticPath = path.resolve(__dirname);
 app.use(express.static(staticPath));
 console.log(staticPath);
 
-app.listen(8080, function() {
+app.listen(80, function() {
   console.log('listening');
 });
