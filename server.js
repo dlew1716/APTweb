@@ -3,12 +3,23 @@ var express = require('express');
 var handlebars = require('handlebars');
 var fs = require('fs');
 var PythonShell = require('python-shell');
-var bodyParser = require('body-parser')
+var bodyParser = require('body-parser');
+var exec = require('child_process').exec;
 
 
 
 var outputString
 
+function makeid()
+{
+    var text = "";
+    var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+    for( var i=0; i < 5; i++ )
+        text += possible.charAt(Math.floor(Math.random() * possible.length));
+
+    return text;
+}
 
 var buildTemplate = function(){
 
@@ -71,30 +82,65 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
 })); 
 
 app.get('/', function(req, res) {
+  //console.log(req.connection.remoteAddress)
   outputString = buildTemplate()
   res.send(outputString);
 
 });
 
+
+app.post('/new', function(req, res) {
+
+  var whosip = req.connection.remoteAddress.toString().split(":")[req.connection.remoteAddress.toString().split(":").length-1]
+  console.log(whosip)
+
+  if(whosip == 1){
+
+	 console.log("Local Post Request Received")
+	  var buf = new Buffer(req.body.wav, 'base64');
+	  var wstream = fs.createWriteStream(__dirname + "/wavs/" +req.body.date.toString()+".wav");
+	  wstream.write(buf);
+	  wstream.end();
+
+	  res.send(null);
+
+
+	 exec('./Decoder' + ' wavs/'+req.body.date.toString()+".wav " + "pngs/" + req.body.date.toString()+".png", function(error, stdout, stderr) {
+	    console.log('stdout: ' + stdout);
+	    console.log('stderr: ' + stderr);
+	    if (error !== null) {
+	        console.log('exec error: ' + error);
+	    }
+	});
+
+
+  }
+
+
+});
+
 app.post('/', function(req, res) {
-  console.log("Post Request Received")
-  var buf = new Buffer(req.body.wav, 'base64');
-  var wstream = fs.createWriteStream(__dirname + "/wavs/" +req.body.date.toString()+".wav");
-  wstream.write(buf);
-  wstream.end();
 
-  var options = {
-  args: [req.body.date.toString()+".wav", req.body.date.toString()+".png"]
-  };
+  	  var whosip = req.connection.remoteAddress.toString().split(":")[req.connection.remoteAddress.toString().split(":").length-1]
+  	  console.log(whosip)
+  	  var genName = makeid()
 
-  res.send(JSON.stringify({err: null}));
-  PythonShell.run('MyDecoder.py',options, function (err, results) {
-    if (err) return console.log(err);
-    // results is an array consisting of messages collected during execution 
-    console.log('results: %j', results);
-    outputString = buildTemplate()
-  });
+	  console.log("Remote Post Request Received")
+	  var buf = new Buffer(req.body.wav, 'base64');
+	  var wstream = fs.createWriteStream(__dirname + "/userwavs/" +genName+".wav");
+	  wstream.write(buf);
+	  wstream.end();
 
+	  res.send("userpngs/"+genName+".png");
+
+
+	 exec('./Decoder' + ' userwavs/'+genName+".wav " + "userpngs/" +genName+".png", function(error, stdout, stderr) {
+	    console.log('stdout: ' + stdout);
+	    console.log('stderr: ' + stderr);
+	    if (error !== null) {
+	        console.log('exec error: ' + error);
+	    }
+	});
 
 
 });
