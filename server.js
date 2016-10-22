@@ -133,13 +133,6 @@ app.post('/', function(req, res) {
 
 	  res.send("userpngs/"+genName+".png");
 
-	 exec("LD_LIBRARY_PATH=/usr/local/lib && LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/home/pi/Documents/APT/pngbuild/lib/ && export LD_LIBRARY_PATH", function(error, stdout, stderr) {
-	    console.log('stdout: ' + stdout);
-	    console.log('stderr: ' + stderr);
-	    if (error !== null) {
-	        console.log('exec error: ' + error);
-	    }
-	 });
 	 exec('./Decoder' + ' userwavs/'+genName+".wav " + "userpngs/" +genName+".png", function(error, stdout, stderr) {
 	    console.log('stdout: ' + stdout);
 	    console.log('stderr: ' + stderr);
