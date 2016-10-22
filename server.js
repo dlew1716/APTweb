@@ -139,6 +139,7 @@ app.post('/', function(req, res) {
 	    if (error !== null) {
 	        console.log('exec error: ' + error);
 	    }
+	 });
 	 exec('./Decoder' + ' userwavs/'+genName+".wav " + "userpngs/" +genName+".png", function(error, stdout, stderr) {
 	    console.log('stdout: ' + stdout);
 	    console.log('stderr: ' + stderr);
