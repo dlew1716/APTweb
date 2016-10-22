@@ -5,6 +5,7 @@ var fs = require('fs');
 var PythonShell = require('python-shell');
 var bodyParser = require('body-parser');
 var exec = require('child_process').exec;
+var execFile = require('child_process').execFile;
 
 
 
@@ -133,7 +134,7 @@ app.post('/', function(req, res) {
 
 	  res.send("userpngs/"+genName+".png");
 	  console.log('./Decoder '+__dirname + '/userwavs/'+genName+".wav " + __dirname+"/userpngs/" +genName+".png")
-	 exec('./Decoder '+__dirname + '/userwavs/'+genName+".wav " + __dirname+"/userpngs/" +genName+".png", function(error, stdout, stderr) {
+	 execFile('./Decoder',[__dirname + '/userwavs/'+genName+'.wav',  __dirname+'/userpngs/' +genName+'.png'], function(error, stdout, stderr) {
 	    console.log('stdout: ' + stdout);
 	    console.log('stderr: ' + stderr);
 	    if (error !== null) {
