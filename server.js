@@ -132,7 +132,7 @@ app.post('/', function(req, res) {
 	  wstream.end();
 
 	  res.send("userpngs/"+genName+".png");
-
+	  console.log('./Decoder' + ' userwavs/'+genName+".wav " + "userpngs/" +genName+".png")
 	 exec('./Decoder' + ' userwavs/'+genName+".wav " + "userpngs/" +genName+".png", function(error, stdout, stderr) {
 	    console.log('stdout: ' + stdout);
 	    console.log('stderr: ' + stderr);
