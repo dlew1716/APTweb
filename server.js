@@ -132,8 +132,8 @@ app.post('/', function(req, res) {
 	  wstream.end();
 
 	  res.send("userpngs/"+genName+".png");
-	  console.log('./Decoder '+__dirname + 'userwavs/'+genName+".wav " + __dirname+"userpngs/" +genName+".png")
-	 exec('./Decoder '+__dirname + 'userwavs/'+genName+".wav " + __dirname+"userpngs/" +genName+".png", function(error, stdout, stderr) {
+	  console.log('./Decoder '+__dirname + '/userwavs/'+genName+".wav " + __dirname+"/userpngs/" +genName+".png")
+	 exec('./Decoder '+__dirname + '/userwavs/'+genName+".wav " + __dirname+"/userpngs/" +genName+".png", function(error, stdout, stderr) {
 	    console.log('stdout: ' + stdout);
 	    console.log('stderr: ' + stderr);
 	    if (error !== null) {
