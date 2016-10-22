@@ -130,17 +130,19 @@ app.post('/', function(req, res) {
 	  var buf = new Buffer(req.body.wav, 'base64');
 	  var wstream = fs.createWriteStream(__dirname + "/userwavs/" +genName+".wav");
 	  wstream.write(buf);
-	  wstream.end();
+	  wstream.end(function () {  
 
-	  res.send("userpngs/"+genName+".png");
-	  console.log('./Decoder '+__dirname + '/userwavs/'+genName+".wav " + __dirname+"/userpngs/" +genName+".png")
-	 execFile('./Decoder',[__dirname + '/userwavs/'+genName+'.wav',  __dirname+'/userpngs/' +genName+'.png'], function(error, stdout, stderr) {
-	    console.log('stdout: ' + stdout);
-	    console.log('stderr: ' + stderr);
-	    if (error !== null) {
-	        console.log('exec error: ' + error);
-	    }
-	});
+		  res.send("userpngs/"+genName+".png");
+		  console.log('./Decoder '+__dirname + '/userwavs/'+genName+".wav " + __dirname+"/userpngs/" +genName+".png")
+		 execFile('./Decoder',[__dirname + '/userwavs/'+genName+'.wav',  __dirname+'/userpngs/' +genName+'.png'], function(error, stdout, stderr) {
+		    console.log('stdout: ' + stdout);
+		    console.log('stderr: ' + stderr);
+		    if (error !== null) {
+		        console.log('exec error: ' + error);
+		    }
+		});
+
+	 });
 
 
 });
