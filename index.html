@@ -107,7 +107,7 @@
             var response = event.target.response;
             console.log(response)
             document.getElementById('uploadButton').innerHTML = 'Processing.'
-            callback( response );
+            callback( null,response );
           } else {
             callback( "Could not perform upload" )
           }
