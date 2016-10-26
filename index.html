@@ -156,7 +156,7 @@
         function updateProgress (event) {
           if (event.lengthComputable) {
             var percentComplete = event.loaded / event.total;
-            document.getElementById('uploadButton').innerHTML = percentComplete.toString();
+            document.getElementById('uploadButton').innerHTML = (percentComplete*100).toString();
 
           } else {
     
