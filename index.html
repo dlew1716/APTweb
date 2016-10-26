@@ -164,14 +164,17 @@
 
                               document.getElementById('uploadButton').innerHTML = 'Processing..'
                               request.open('GET', 'http://instantcoffee.ddns.net/'+response, true);
-                              request.send();
-                              console.log('checking status')
+                              var delay=1000; //1 second
+
+                              setTimeout(function() {
+                                request.send();
+                                console.log('checking status')
+                              }, delay);
+
                           }  
                           else if(request.status == 200){
 
-                              uploadButton.removeEventListener('click', function(){
-                                  fileInput.click();
-                              })
+                              uploadButton.removeEventListener('click', clik)
                               uploadButton.innerHTML = 'Click Here'
 
 
@@ -192,9 +195,14 @@
         }
         // uploadXHR('/', )
       });
-      uploadButton.addEventListener('click', function(){
+
+      function clik(){
+
         fileInput.click();
-      })
+
+      }
+
+      uploadButton.addEventListener('click', clik)
     </script>
 
 </body></html>
