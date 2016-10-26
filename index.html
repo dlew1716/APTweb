@@ -165,6 +165,7 @@
                               document.getElementById('uploadButton').innerHTML = 'Processing..'
                               request.open('GET', 'http://instantcoffee.ddns.net/'+response, true);
                               var delay=1000; //1 second
+                              var delay=2000; //1 second
 
                               setTimeout(function() {
                                 request.send();
