@@ -153,17 +153,13 @@
           callback( 'No Internet connection' );
         }
 
-        function updateProgress (event) {
-          if (event.lengthComputable) {
-            var percentComplete = event.loaded / event.total;
-            document.getElementById('uploadButton').innerHTML = (percentComplete*100).toString();
 
-          } else {
-    
-            }
-         }
+        request.upload.onprogress = function(event){
+            var done = event.position || event.loaded, total = event.totalSize || event.total
+            var present = Math.floor(done/total*100)
+            document.getElementById('uploadButton').innerHTML = present + '%'
+        }
 
-        request.addEventListener("progress", updateProgress);
         request.addEventListener( 'load', handleLoad );
         request.addEventListener( 'error', handleError );
 
