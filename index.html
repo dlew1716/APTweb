@@ -173,9 +173,12 @@
 
                           }  
                           else if(request.status == 200){
+                              setTimeout(function() {
+                                uploadButton.innerHTML = 'Click Here'
+                              }, delay);
 
                               uploadButton.removeEventListener('click', clik)
-                              uploadButton.innerHTML = 'Click Here'
+                              
 
                               uploadButton.setAttribute('download','Your Image')
                               uploadButton.setAttribute('onClick' ,"location.href="+"'http://instantcoffee.ddns.net/"+response+"'")
