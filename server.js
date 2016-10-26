@@ -95,25 +95,28 @@ app.post('/new', function(req, res) {
   var whosip = req.connection.remoteAddress.toString().split(":")[req.connection.remoteAddress.toString().split(":").length-1]
   console.log(whosip)
 
-  if(whosip == 1){
+  //if(whosip == 1){
+  if(1){
 
-	 console.log("Local Post Request Received")
+	  console.log("Local Post Request Received")
 	  var buf = new Buffer(req.body.wav, 'base64');
 	  var wstream = fs.createWriteStream(__dirname + "/wavs/" +req.body.date.toString()+".wav");
 	  wstream.write(buf);
-	  wstream.end();
+	  wstream.end(function (){    
 
 	  res.send(null);
 
 
-	 exec('./Decoder' + ' wavs/'+req.body.date.toString()+".wav " + "pngs/" + req.body.date.toString()+".png", function(error, stdout, stderr) {
-	    console.log('stdout: ' + stdout);
-	    console.log('stderr: ' + stderr);
-	    if (error !== null) {
-	        console.log('exec error: ' + error);
-	    }
-	});
+		 exec('./Decoder' + ' wavs/'+req.body.date.toString()+".wav " + "pngs/" + req.body.date.toString()+".png", function(error, stdout, stderr) {
+		    console.log('stdout: ' + stdout);
+		    console.log('stderr: ' + stderr);
+		    if (error !== null) {
+		    	
+		        console.log('exec error: ' + error);
+		    }
+		 });
 
+       });
 
   }
 
