@@ -89,43 +89,7 @@
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <script src="Narrow%20Jumbotron%20Template%20for%20Bootstrap_files/ie10-viewport-bug-workaround.js"></script>
     <script>
-      function getXHR( url, data, callback ){
 
-        var request = new XMLHttpRequest();
-        request.open( "GET", url );
-        request.setRequestHeader('Content-Type','image/png')
-
-        var cancel = function(){
-          request.removeEventListener( 'load', handleLoad );
-          request.removeEventListener( 'error', handleError );
-          request.abort();
-        };
-
-        var handleLoad = function ( event ) {
-          if ( request.status === 200 ) {
-            var response = event.target.response;
-            console.log(response)
-            callback( null );
-          } else {
-            callback( "Could not perform upload" )
-          }
-        }
-
-        var handleError = function( event ){
-          cancel();
-          callback( 'No Internet connection' );
-        }
-
-        request.addEventListener( 'load', handleLoad );
-        request.addEventListener( 'error', handleError );
-
-        if( data.byteLength > 100000000 ) return callback( "File size too big" );
-
-        request.send( data );
-
-        return cancel;
-
-      };
       function uploadXHR( url, data, callback ){
 
         var request = new XMLHttpRequest();
@@ -142,12 +106,14 @@
           if ( request.status === 200 ) {
             var response = event.target.response;
             console.log(response)
-            document.getElementById('uploadButton').innerHTML = 'Processing..'
+            document.getElementById('uploadButton').innerHTML = 'Processing.'
             callback( null );
           } else {
             callback( "Could not perform upload" )
           }
         }
+
+
 
         var handleError = function( event ){
           cancel();
@@ -162,6 +128,7 @@
         }
 
         request.addEventListener( 'load', handleLoad );
+
         request.addEventListener( 'error', handleError );
 
         if( data.byteLength > 100000000 ) return callback( "File size too big" );
@@ -188,6 +155,27 @@
           }         
           uploadXHR('/', JSON.stringify(obj), function(err, response){
             console.log(err, response);
+
+
+               request.open('GET', 'http://instantcoffee.ddns.net/'+response, true);
+               request.onreadystatechange = function(){
+                    if (request.readyState === 4){
+                        if (request.status === 404) {  
+
+                            document.getElementById('uploadButton').innerHTML = 'Processing..'
+                            request.send();
+                        }  
+                        else if(request.status == 200){
+
+                            document.getElementById('uploadButton').innerHTML = 'instantcoffee.ddns.net/'+response
+
+                        }
+                    }
+               };
+               request.send();
+
+        }
+
           });
 
           
