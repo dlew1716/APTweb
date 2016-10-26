@@ -157,19 +157,19 @@
             console.log(err, response);
 
                  var request = new XMLHttpRequest();
-                 request.open('GET', 'http://instantcoffee.ddns.net/'+response, true);
+                 request.open('GET', 'http://instantcoffee.ddns.net/'+response.toString(), true);
                  request.onreadystatechange = function(){
                       if (request.readyState === 4){
                           if (request.status === 404) {  
 
                               document.getElementById('uploadButton').innerHTML = 'Processing..'
-                              request.open('GET', 'http://instantcoffee.ddns.net/'+response, true);
+                              request.open('GET', 'http://instantcoffee.ddns.net/'+response.toString(), true);
                               request.send();
                               console.log('checking status')
                           }  
                           else if(request.status == 200){
 
-                              document.getElementById('uploadButton').innerHTML = 'instantcoffee.ddns.net/'+response
+                              document.getElementById('uploadButton').innerHTML = 'instantcoffee.ddns.net/'+response.toString()
 
                           }
                       }
