@@ -10,7 +10,7 @@ b64data = base64.b64encode(data)
 
 postdata = {'wav':b64data,'date':datetime.datetime.now().strftime('%Y-%m-%dT%Hz%Mz%S')}
 
-res = requests.post('http://192.168.0.23:8080',postdata)
+res = requests.post('http://instantcoffee.ddns.net/new',postdata)
 
 
 f.close
