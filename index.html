@@ -163,6 +163,7 @@
                           if (request.status === 404) {  
 
                               document.getElementById('uploadButton').innerHTML = 'Processing..'
+                              request.open('GET', 'http://instantcoffee.ddns.net/'+response, true);
                               request.send();
                               console.log('checking status')
                           }  
