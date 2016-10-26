@@ -169,8 +169,14 @@
                           }  
                           else if(request.status == 200){
 
-                              document.getElementById('uploadButton').innerHTML = 'Click Here'
-                              document.getElementById('uploadButton').setAttribute('href','http://instantcoffee.ddns.net/'+response)
+                              uploadButton.removeEventListener('click', function(){
+                                  fileInput.click();
+                              })
+                              uploadButton.innerHTML = 'Click Here'
+
+
+                              uploadButton.setAttribute('href','http://instantcoffee.ddns.net/'+response)
+                              uploadButton.setAttribute('download','Your Image')
 
                           }
                       }
