@@ -154,22 +154,22 @@
             date: new Date().toISOString().replace(/\..+/, '').replace(":", 'z').replace(":", 'z')
           }         
           uploadXHR('/', JSON.stringify(obj), function(err, response){
-            console.log(err, response);
+            console.log(response);
 
                  var request = new XMLHttpRequest();
-                 request.open('GET', 'http://instantcoffee.ddns.net/'+response.toString(), true);
+                 request.open('GET', 'http://instantcoffee.ddns.net/'+response, true);
                  request.onreadystatechange = function(){
                       if (request.readyState === 4){
                           if (request.status === 404) {  
 
                               document.getElementById('uploadButton').innerHTML = 'Processing..'
-                              request.open('GET', 'http://instantcoffee.ddns.net/'+response.toString(), true);
+                              request.open('GET', 'http://instantcoffee.ddns.net/'+response, true);
                               request.send();
                               console.log('checking status')
                           }  
                           else if(request.status == 200){
 
-                              document.getElementById('uploadButton').innerHTML = 'instantcoffee.ddns.net/'+response.toString()
+                              document.getElementById('uploadButton').innerHTML = 'instantcoffee.ddns.net/'+response
 
                           }
                       }
