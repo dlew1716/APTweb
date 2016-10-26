@@ -177,9 +177,8 @@
                               uploadButton.removeEventListener('click', clik)
                               uploadButton.innerHTML = 'Click Here'
 
-
-                              uploadButton.setAttribute('href','http://instantcoffee.ddns.net/'+response)
                               uploadButton.setAttribute('download','Your Image')
+                              uploadButton.setAttribute('onClick' ,"location.href="+"'http://instantcoffee.ddns.net/"+response+"'")
 
                           }
                       }
@@ -201,6 +200,13 @@
         fileInput.click();
 
       }
+      function clik2(){
+
+        fileInput.click();
+
+      }
+
+
 
       uploadButton.addEventListener('click', clik)
     </script>
